@@ -5,14 +5,15 @@
   "main": "dist/main/main.js",
   "type": "module",
   "scripts": {
-    "start": "npm run build && electron .",
+    "start": "electron .",
     "dev": "concurrently \"npm run build:watch\" \"wait-on dist/main/main.js && electron .\"",
-    "build": "npm run clean && npm run build:ts && npm run fix-imports && npm run copy-assets",
+    "build": "npm run clean && npm run build:ts && npm run fix-imports && npm run copy-assets && npm run post-build",
     "build:ts": "tsc",
     "build:watch": "tsc -w",
     "fix-imports": "node scripts/fix-imports.js",
+    "post-build": "node scripts/post-build.js",
     "clean": "rimraf dist",
-    "copy-assets": "copyfiles -u 1 \"src/**/*.html\" \"src/**/*.css\" \"src/assets/**/*\" dist && copyfiles \"index.html\" dist",
+    "copy-assets": "copyfiles -u 1 \"src/**/*.html\" \"src/**/*.css\" \"src/assets/**/*\" dist",
     "package": "npm run build && electron-builder",
     "package:win": "npm run build && electron-builder --win",
     "package:mac": "npm run build && electron-builder --mac",
@@ -28,6 +29,7 @@
     },
     "files": [
       "dist/**/*",
+      "index.html",
       "node_modules/**/*",
       "!node_modules/**/test/**",
       "!**/*.map"

@@ -31,22 +31,37 @@ function fixImports(filePath) {
   
   // Паттерны для поиска импортов
   const patterns = [
-    // import { something } from './module'
-    /from\s+['"](\.[^'"]+)(?<!\.js)(?<!\.json)['"];?/g,
-    // import something from '../module'
-    /import\s+.*?\s+from\s+['"](\.[^'"]+)(?<!\.js)(?<!\.json)['"];?/g,
-    // export { something } from './module'
-    /export\s+.*?\s+from\s+['"](\.[^'"]+)(?<!\.js)(?<!\.json)['"];?/g,
+    // import { something } from './module' -> from './module.js'
+    /from\s+['"](\.[^'"]+?)(?<!\.js)(?<!\.json)(?<!\.css)(?<!\.html)['"](\s*;?)/g,
+    // export { something } from './module' -> from './module.js'
+    /export\s+.*?\s+from\s+['"](\.[^'"]+?)(?<!\.js)(?<!\.json)(?<!\.css)(?<!\.html)['"](\s*;?)/g,
   ];
   
   for (const pattern of patterns) {
-    content = content.replace(pattern, (match, importPath) => {
-      modified = true;
-      // Не добавляем .js к путям, которые уже имеют расширение
-      if (importPath.includes('.')) {
-        return match;
+    content = content.replace(pattern, (match, importPath, ending) => {
+      // Проверяем, не является ли это путем к директории
+      const resolvedPath = path.resolve(path.dirname(filePath), importPath);
+      
+      try {
+        const stat = fs.statSync(resolvedPath);
+        if (stat.isDirectory()) {
+          // Если это директория, добавляем /index.js
+          modified = true;
+          return match.replace(importPath, importPath + '/index.js');
+        }
+      } catch (e) {
+        // Файл не существует, попробуем добавить .js
+        try {
+          fs.statSync(resolvedPath + '.js');
+          modified = true;
+          return match.replace(importPath, importPath + '.js');
+        } catch (e2) {
+          // Оставляем как есть
+          return match;
+        }
       }
-      return match.replace(importPath, importPath + '.js');
+      
+      return match;
     });
   }
   
@@ -67,12 +82,13 @@ function main() {
   
   console.log('Fixing imports in dist directory...');
   const jsFiles = findJsFiles(distDir);
+  console.log(`Found ${jsFiles.length} JS files to process`);
   
   for (const file of jsFiles) {
     fixImports(file);
   }
   
-  console.log('Done!');
+  console.log('Done fixing imports!');
 }
 
 main();
