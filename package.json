@@ -12,7 +12,7 @@
     "build:watch": "tsc -w",
     "fix-imports": "node scripts/fix-imports.js",
     "clean": "rimraf dist",
-    "copy-assets": "copyfiles -u 1 \"src/**/*.html\" \"src/**/*.css\" \"src/assets/**/*\" dist",
+    "copy-assets": "copyfiles -u 1 \"src/**/*.html\" \"src/**/*.css\" \"src/assets/**/*\" dist && copyfiles \"index.html\" dist",
     "package": "npm run build && electron-builder",
     "package:win": "npm run build && electron-builder --win",
     "package:mac": "npm run build && electron-builder --mac",

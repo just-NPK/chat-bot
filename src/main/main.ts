@@ -93,7 +93,7 @@ const secureApiKey = {
 
 // Создание окна с оптимизациями
 async function createWindow() {
-  const preloadPath = path.join(__dirname, '..', 'preload.js');
+  const preloadPath = path.join(__dirname, '..', 'preload', 'preload.js');
   
   // Проверка файла preload
   try {
@@ -162,7 +162,7 @@ async function createWindow() {
   });
 
   // Загрузка приложения
-  await mainWindow.loadFile(path.join(__dirname, '..', '..', 'index.html'));
+  await mainWindow.loadFile(path.join(__dirname, '..', 'renderer', 'index.html'));
   
   // Отправка начальной темы
   mainWindow.webContents.on('did-finish-load', () => {
