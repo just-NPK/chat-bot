@@ -1,0 +1,97 @@
+{
+  "name": "nous-chat",
+  "version": "1.0.0",
+  "description": "Продвинутый локальный чат клиент для Nous Research API",
+  "main": "dist/main/main.js",
+  "type": "module",
+  "scripts": {
+    "start": "npm run build && electron .",
+    "dev": "concurrently \"npm run build:watch\" \"wait-on dist/main/main.js && electron .\"",
+    "build": "npm run clean && npm run build:ts && npm run fix-imports && npm run copy-assets",
+    "build:ts": "tsc",
+    "build:watch": "tsc -w",
+    "fix-imports": "node scripts/fix-imports.js",
+    "clean": "rimraf dist",
+    "copy-assets": "copyfiles -u 1 \"src/**/*.html\" \"src/**/*.css\" \"src/assets/**/*\" dist",
+    "package": "npm run build && electron-builder",
+    "package:win": "npm run build && electron-builder --win",
+    "package:mac": "npm run build && electron-builder --mac",
+    "package:linux": "npm run build && electron-builder --linux",
+    "lint": "eslint src --ext .ts,.tsx",
+    "test": "jest"
+  },
+  "build": {
+    "appId": "com.yourcompany.nouschat",
+    "productName": "Nous Chat",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "node_modules/**/*",
+      "!node_modules/**/test/**",
+      "!**/*.map"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "src/assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "deleteAppDataOnUninstall": true
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "src/assets/icon.icns",
+      "category": "public.app-category.productivity"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "src/assets/icon.png",
+      "category": "Utility"
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
+    "@types/electron": "^1.6.10",
+    "@types/pdfkit": "^0.13.4",
+    "@types/react-window": "^1.8.8",
+    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "@typescript-eslint/parser": "^6.15.0",
+    "concurrently": "^8.2.2",
+    "copyfiles": "^2.4.1",
+    "electron": "^28.1.0",
+    "electron-builder": "^25.0.5",
+    "eslint": "^8.56.0",
+    "eslint-plugin-react": "^7.33.2",
+    "jest": "^29.7.0",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.3.3",
+    "wait-on": "^7.2.0"
+  },
+  "dependencies": {
+    "docx": "^8.5.0",
+    "electron-log": "^5.4.1",
+    "electron-store": "^10.0.0",
+    "immer": "^10.0.3",
+    "keytar": "^7.9.0",
+    "pdfkit": "^0.14.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-window": "^1.8.10",
+    "zustand": "^4.4.7"
+  },
+  "keywords": [
+    "nous",
+    "chat",
+    "ai",
+    "electron",
+    "typescript",
+    "react"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}

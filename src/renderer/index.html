@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://inference-api.nousresearch.com;">
+    <title>Nous Chat</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Highlight.js -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11/styles/github-dark.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11/lib/highlight.min.js"></script>
+    
+    <!-- React -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Marked для Markdown -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
+    <!-- DOMPurify для безопасности -->
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+    
+    <!-- React Window для виртуализации -->
+    <script crossorigin src="https://unpkg.com/react-window@1.8.10/dist/index.umd.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                        'mono': ['JetBrains Mono', 'monospace']
+                    },
+                    animation: {
+                        'slide-in': 'slideIn 0.3s ease-out',
+                        'fade-in': 'fadeIn 0.2s ease-out',
+                        'pulse-dot': 'pulseDot 1.4s infinite'
+                    },
+                    keyframes: {
+                        slideIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        pulseDot: {
+                            '0%, 100%': { opacity: '0.3' },
+                            '50%': { opacity: '1' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans antialiased">
+    <div id="root">
+        <div class="flex h-screen items-center justify-center bg-gray-100 dark:bg-gray-900">
+            <div class="flex items-center">
+                <div class="flex space-x-2">
+                    <div class="w-2 h-2 bg-gray-400 rounded-full animate-pulse-dot"></div>
+                    <div class="w-2 h-2 bg-gray-400 rounded-full animate-pulse-dot" style="animation-delay: 0.2s"></div>
+                    <div class="w-2 h-2 bg-gray-400 rounded-full animate-pulse-dot" style="animation-delay: 0.4s"></div>
+                </div>
+                <p class="ml-4 text-gray-600 dark:text-gray-400">Загрузка приложения...</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Скомпилированный TypeScript будет здесь -->
+    <script src="../dist/renderer/index.js"></script>
+</body>
+</html>
